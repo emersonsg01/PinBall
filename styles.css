@@ -1,0 +1,390 @@
+/* Retro Pinball Game Styles */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #121212;
+    background-image: url('assets/arcade-background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 90vh;
+    max-height: 900px;
+}
+
+.pinball-machine {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #330033, #660066);
+    border-radius: 20px;
+    border: 8px solid #222;
+    box-shadow: 0 0 40px rgba(255, 0, 255, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.score-display {
+    background: #000;
+    border: 4px solid #444;
+    border-radius: 10px;
+    margin: 15px auto;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+}
+
+.score-title {
+    color: #ff00ff;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+#score {
+    color: #ffff00;
+    font-size: 24px;
+    text-shadow: 0 0 10px #ffff00;
+}
+
+.game-board {
+    position: relative;
+    flex: 1;
+    background-image: url('assets/pinball-board.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0 15px 15px;
+    border-radius: 10px;
+    border: 4px solid #444;
+    overflow: hidden;
+}
+
+/* Ball */
+.ball {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #cccccc);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    transition: box-shadow 0.2s;
+    display: none;
+}
+
+.ball.active {
+    display: block;
+    animation: ballGlow 1s infinite alternate;
+}
+
+@keyframes ballGlow {
+    from { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+    to { box-shadow: 0 0 15px rgba(255, 255, 255, 0.9); }
+}
+
+/* Flippers */
+.flipper {
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    background: linear-gradient(to bottom, #ff0000, #990000);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    z-index: 5;
+    bottom: 50px;
+    transform-origin: center left;
+    transition: transform 0.1s ease-out;
+}
+
+.left-flipper {
+    left: 50px;
+    transform: rotate(20deg);
+}
+
+.right-flipper {
+    right: 50px;
+    transform: rotate(-20deg) scaleX(-1);
+    transform-origin: center right;
+}
+
+.left-flipper.active {
+    transform: rotate(-30deg);
+}
+
+.right-flipper.active {
+    transform: rotate(30deg) scaleX(-1);
+}
+
+/* Bumpers */
+.bumper {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle at center, #00ffff, #0099cc);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+    z-index: 5;
+}
+
+.bumper1 {
+    top: 150px;
+    left: 150px;
+}
+
+.bumper2 {
+    top: 100px;
+    right: 150px;
+}
+
+.bumper3 {
+    top: 250px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bumper.hit {
+    animation: bumperHit 0.3s ease-out;
+}
+
+@keyframes bumperHit {
+    0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); }
+    50% { transform: scale(1.2); box-shadow: 0 0 30px rgba(0, 255, 255, 1); }
+    100% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); }
+}
+
+/* Targets */
+.target {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(to bottom, #ffff00, #cc9900);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
+    z-index: 5;
+}
+
+.target1 {
+    top: 200px;
+    left: 80px;
+}
+
+.target2 {
+    top: 150px;
+    right: 80px;
+}
+
+.target3 {
+    top: 300px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.target.hit {
+    animation: targetHit 0.3s ease-out;
+    background: linear-gradient(to bottom, #ffffff, #ffff00);
+}
+
+@keyframes targetHit {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+}
+
+/* Walls */
+.wall {
+    position: absolute;
+    background: linear-gradient(to bottom, #cc00cc, #990099);
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+    z-index: 5;
+}
+
+.left-wall {
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+}
+
+.right-wall {
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 100%;
+}
+
+.top-wall {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10px;
+}
+
+/* Launch ramp and launcher */
+.launch-ramp {
+    position: absolute;
+    right: 30px;
+    bottom: 0;
+    width: 30px;
+    height: 300px;
+    background: linear-gradient(to right, #666666, #999999);
+    border-left: 2px solid #444;
+    border-right: 2px solid #444;
+    z-index: 4;
+}
+
+.launcher {
+    position: absolute;
+    right: 35px;
+    bottom: 20px;
+    width: 20px;
+    height: 60px;
+    background: linear-gradient(to bottom, #ff9900, #cc6600);
+    border-radius: 5px;
+    z-index: 6;
+    cursor: pointer;
+}
+
+.launcher:active, .launcher.active {
+    bottom: 100px;
+    transition: bottom 0.2s ease-out;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #222;
+    border-top: 4px solid #444;
+    border-radius: 0 0 10px 10px;
+}
+
+.start-button {
+    background: linear-gradient(to bottom, #00ff00, #009900);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s;
+}
+
+.start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 1);
+}
+
+.start-button:active {
+    transform: scale(0.95);
+}
+
+.instructions {
+    font-size: 8px;
+    color: #ccc;
+    text-align: right;
+}
+
+.instructions p {
+    margin: 5px 0;
+}
+
+/* Game Overlay */
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.overlay-content {
+    text-align: center;
+    padding: 30px;
+    background: rgba(50, 0, 50, 0.8);
+    border-radius: 20px;
+    border: 4px solid #ff00ff;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.7);
+    animation: glowPulse 2s infinite alternate;
+}
+
+@keyframes glowPulse {
+    from { box-shadow: 0 0 20px rgba(255, 0, 255, 0.7); }
+    to { box-shadow: 0 0 40px rgba(255, 0, 255, 1); }
+}
+
+.overlay-content h1 {
+    color: #ff00ff;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #ff00ff;
+}
+
+.overlay-content p {
+    color: #00ffff;
+    font-size: 16px;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+/* Animations */
+@keyframes flipperGlow {
+    from { box-shadow: 0 0 10px rgba(255, 0, 0, 0.7); }
+    to { box-shadow: 0 0 20px rgba(255, 0, 0, 1); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .game-container {
+        max-width: 95%;
+    }
+    
+    .flipper {
+        width: 80px;
+    }
+    
+    .left-flipper {
+        left: 30px;
+    }
+    
+    .right-flipper {
+        right: 30px;
+    }
+    
+    .bumper {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .overlay-content h1 {
+        font-size: 24px;
+    }
+    
+    .overlay-content p {
+        font-size: 12px;
+    }
+}

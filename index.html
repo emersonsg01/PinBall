@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Pinball</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="pinball-machine">
+            <div class="score-display">
+                <div class="score-title">SCORE</div>
+                <div id="score">0</div>
+            </div>
+            <div class="game-board">
+                <div class="ball" id="ball"></div>
+                
+                <!-- Flippers -->
+                <div class="flipper left-flipper" id="leftFlipper"></div>
+                <div class="flipper right-flipper" id="rightFlipper"></div>
+                
+                <!-- Bumpers -->
+                <div class="bumper bumper1"></div>
+                <div class="bumper bumper2"></div>
+                <div class="bumper bumper3"></div>
+                
+                <!-- Targets -->
+                <div class="target target1"></div>
+                <div class="target target2"></div>
+                <div class="target target3"></div>
+                
+                <!-- Walls -->
+                <div class="wall left-wall"></div>
+                <div class="wall right-wall"></div>
+                <div class="wall top-wall"></div>
+                
+                <!-- Launch ramp -->
+                <div class="launch-ramp"></div>
+                <div class="launcher" id="launcher"></div>
+            </div>
+            
+            <div class="controls">
+                <div class="start-button" id="startButton">START</div>
+                <div class="instructions">
+                    <p>LEFT FLIPPER: Z</p>
+                    <p>RIGHT FLIPPER: /</p>
+                    <p>LAUNCH: SPACE</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="game-overlay" id="gameOverlay">
+        <div class="overlay-content">
+            <h1>RETRO PINBALL</h1>
+            <p>Click START to play!</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
