@@ -1,63 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Pinball</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="theme-color" content="#07041a">
+    <title>Neon Orbit — Pinball</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
-        <div class="pinball-machine">
-            <div class="score-display">
-                <div class="score-title">SCORE</div>
-                <div id="score">0</div>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <div class="app">
+        <!-- Painel esquerdo: marca, controles e regras -->
+        <aside class="panel panel-left">
+            <div class="brand">
+                <span class="brand-neon">NEON</span><span class="brand-orbit">ORBIT</span>
             </div>
-            <div class="game-board">
-                <div class="ball" id="ball"></div>
-                
-                <!-- Flippers -->
-                <div class="flipper left-flipper" id="leftFlipper"></div>
-                <div class="flipper right-flipper" id="rightFlipper"></div>
-                
-                <!-- Bumpers -->
-                <div class="bumper bumper1"></div>
-                <div class="bumper bumper2"></div>
-                <div class="bumper bumper3"></div>
-                
-                <!-- Targets -->
-                <div class="target target1"></div>
-                <div class="target target2"></div>
-                <div class="target target3"></div>
-                
-                <!-- Walls -->
-                <div class="wall left-wall"></div>
-                <div class="wall right-wall"></div>
-                <div class="wall top-wall"></div>
-                
-                <!-- Launch ramp -->
-                <div class="launch-ramp"></div>
-                <div class="launcher" id="launcher"></div>
+            <p class="tagline">Pinball arcade · física em tempo real</p>
+
+            <section class="card">
+                <h2>Controles</h2>
+                <ul class="keys">
+                    <li><span class="k"><kbd>Z</kbd><kbd>←</kbd></span><span>Flipper esquerdo</span></li>
+                    <li><span class="k"><kbd>/</kbd><kbd>→</kbd></span><span>Flipper direito</span></li>
+                    <li><span class="k"><kbd>Espaço</kbd><kbd>↓</kbd></span><span>Segure e solte para lançar</span></li>
+                    <li><span class="k"><kbd>↑</kbd><kbd>N</kbd></span><span>Empurrar a mesa</span></li>
+                    <li><span class="k"><kbd>P</kbd><kbd>M</kbd></span><span>Pausa · Som</span></li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>Como pontuar</h2>
+                <ul class="rules">
+                    <li><b class="c-yellow">Pistas</b> Acenda as 3 do topo para subir o bônus até 5x. Os flippers trocam as luzes.</li>
+                    <li><b class="c-green">Skill shot</b> Lance direto na pista que pisca: 25.000.</li>
+                    <li><b class="c-cyan">Alvos O·R·B</b> Acendem a trava do buraco. Trave 2 bolas para a <b>multibola</b>.</li>
+                    <li><b class="c-magenta">Jackpot</b> Na multibola, acerte o buraco. Os drop targets aumentam o valor.</li>
+                    <li><b class="c-orange">Órbita</b> Faça a bola dar a volta pelo lado direito.</li>
+                </ul>
+            </section>
+        </aside>
+
+        <!-- Gabinete: display + mesa -->
+        <main class="cabinet">
+            <div class="backbox">
+                <canvas id="dmd" aria-label="Placar"></canvas>
             </div>
-            
-            <div class="controls">
-                <div class="start-button" id="startButton">START</div>
-                <div class="instructions">
-                    <p>LEFT FLIPPER: Z</p>
-                    <p>RIGHT FLIPPER: /</p>
-                    <p>LAUNCH: SPACE</p>
+
+            <div class="playfield" id="playfield">
+                <canvas id="table" aria-label="Mesa de pinball"></canvas>
+
+                <div class="hud-buttons">
+                    <button class="icon-btn" id="btnPause" aria-label="Pausar" title="Pausar (P)">
+                        <svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                    </button>
+                    <button class="icon-btn" id="btnSound" aria-label="Som" title="Som (M)">
+                        <svg viewBox="0 0 24 24" class="ico-on"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        <svg viewBox="0 0 24 24" class="ico-off"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                </div>
+
+                <div class="overlay" id="overlay">
+                    <div class="screen active" data-screen="start">
+                        <div class="title"><span class="t-neon">NEON</span><span class="t-orbit">ORBIT</span></div>
+                        <p class="subtitle">Uma mesa de pinball synthwave</p>
+                        <button class="btn-primary" id="btnStart">JOGAR</button>
+                        <p class="hint only-desktop">ou pressione <kbd>Enter</kbd></p>
+                        <p class="hint only-touch">Toque na metade esquerda ou direita para os flippers.<br>Segure embaixo à direita para lançar.</p>
+                    </div>
+
+                    <div class="screen" data-screen="pause">
+                        <h2 class="screen-title">PAUSADO</h2>
+                        <button class="btn-primary" id="btnResume">CONTINUAR</button>
+                        <p class="hint">Pressione <kbd>P</kbd> para voltar</p>
+                    </div>
+
+                    <div class="screen" data-screen="over">
+                        <h2 class="screen-title">FIM DE JOGO</h2>
+                        <div class="final-score" id="finalScore">0</div>
+                        <form class="hs-form" id="hsForm" hidden>
+                            <label for="hsName">Novo recorde! Suas iniciais</label>
+                            <div class="hs-row">
+                                <input id="hsName" maxlength="3" autocomplete="off" spellcheck="false" placeholder="AAA">
+                                <button class="btn-secondary" type="submit">SALVAR</button>
+                            </div>
+                        </form>
+                        <button class="btn-primary" id="btnAgain">JOGAR DE NOVO</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <!-- Painel direito: status e recordes -->
+        <aside class="panel panel-right">
+            <section class="card score-card">
+                <h2>Pontuação</h2>
+                <div class="big-score" id="uiScore">0</div>
+                <div class="stat-row">
+                    <div class="stat"><span>Bola</span><b id="uiBall">–</b></div>
+                    <div class="stat"><span>Bônus</span><b id="uiMult">1x</b></div>
+                    <div class="stat"><span>Jackpot</span><b id="uiJackpot">50.000</b></div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Missões</h2>
+                <div class="mission"><span>Pistas do topo</span><div class="lamps yellow" id="uiLanes"><i></i><i></i><i></i></div></div>
+                <div class="mission"><span>Alvos O·R·B</span><div class="lamps cyan" id="uiTargets"><i></i><i></i><i></i></div></div>
+                <div class="mission"><span>Drop targets</span><div class="lamps orange" id="uiDrops"><i></i><i></i><i></i></div></div>
+                <div class="mission"><span>Bolas travadas</span><div class="lamps magenta" id="uiLocks"><i></i><i></i></div></div>
+                <div class="status-line" id="uiStatus">Pronto para jogar</div>
+            </section>
+
+            <section class="card">
+                <h2>Recordes</h2>
+                <ol class="scores" id="uiScores"></ol>
+            </section>
+        </aside>
     </div>
-    
-    <div class="game-overlay" id="gameOverlay">
-        <div class="overlay-content">
-            <h1>RETRO PINBALL</h1>
-            <p>Click START to play!</p>
-        </div>
-    </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
